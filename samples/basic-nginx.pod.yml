@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+    name: my-nginx
+    labels:
+        label1: test
+spec:
+    containers:
+        - name: my-nginx
+          image: nginx:alpine
+          livenessProbe:
+            httpGet:
+                path: /index.html
+                port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 2
