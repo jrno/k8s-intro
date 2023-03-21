@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: my-nginx
+    # deployment matches all pods with label app:nginx
+    labels:
+      app: nginx
+spec:
+  # two copies
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      # define label app:nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: my-nginx
+        image: nginx:alpine
+        livenessProbe:
+          httpGet:
+              path: /index.html
+              port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 2
+
