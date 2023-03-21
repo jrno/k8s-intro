@@ -8,3 +8,6 @@ https://minikube.sigs.k8s.io/docs/start/
 
 alias `k="minikube kubectl"` to `.zshrc` / `.bashrc`
 
+## Links & references
+
+- [kubectl cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
