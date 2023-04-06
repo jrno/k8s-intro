@@ -4,8 +4,6 @@ services:
     build: ./db
     ports:
       - "27017:27017"
-    volumes:
-      - ./mongodb:/data/db
     command: mongod --smallfiles --rest --httpinterface
 
   proxy:
@@ -15,8 +13,6 @@ services:
   worker:
     image: jrno/k8s-sample-worker
     build: ./worker
-    volumes:
-      - ./server:/usr/src/app
 
   server:
     image: jrno/k8s-sample-server
