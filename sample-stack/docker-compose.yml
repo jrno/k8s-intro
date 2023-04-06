@@ -1,0 +1,27 @@
+services:
+  db:
+    image: jrno/k8s-sample-db
+    build: ./db
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb:/data/db
+    command: mongod --smallfiles --rest --httpinterface
+
+  proxy:
+    image: jrno/k8s-sample-proxy
+    build: ./proxy
+
+  worker:
+    image: jrno/k8s-sample-worker
+    build: ./worker
+    volumes:
+      - ./server:/usr/src/app
+
+  server:
+    image: jrno/k8s-sample-server
+    build: ./server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/usr/src/app

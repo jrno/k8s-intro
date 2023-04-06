@@ -1,0 +1,1 @@
+echo "Running init.sh - todo, produce to collection"
