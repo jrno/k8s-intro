@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: proxy
-        image: jrno/k8s-sample-proxy
+        image: jrno/k8s-sample-proxy:1
         imagePullPolicy: Never # prevent registry lookup
         ports:
           - containerPort: 80

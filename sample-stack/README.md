@@ -52,6 +52,15 @@ k port-forward deployment/proxy 8080:80
 curl localhost:8080
 ```
 
+## TODO
 
+- Figure out connectivity issue from nginx -> node server (try with direct curl first)
+- Prepare and create service for MongoDB (Stateful-set)
+- Prepare and create service for Worker and verify it writes to collection
+- Add reading to server side to read and expose the collection values
+- Set up the config maps and secrets properly to everywhere
+- Try building images within minikube to speed it up
+- Check better way to version the local images, or if that is even needed
+- Plan for next steps.
 
 
