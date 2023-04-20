@@ -14,31 +14,36 @@ And also to have a small sample cluster to be moved to EKS/GKE for further exper
 
 ## Structure
 
-A sample app with four services.
+### .k8s
+All kubernetes resource definitions for the sample
 
-- A stateful database (MongoDB) using volumes and persistence
-- A worker process creating content to the database
-- A server process reading content from the database 
-- A reverse proxy acting as a load balancer and exposed from k8s cluster
+### proxy
+A reverse proxy acting as a load balancer and exposed out from the k8s cluster. Forwards traffic to the node.js server pods.
 
-## Running the stack
+### server
+A node.js server module accepting incoming http traffic and reading database contents.
 
-Build docker images locally with help of compose:
+### worker
+A worker process creating content for the database by writing it
 
-```docker compose build```
+### database
+A mongodb database that persists the state of the data/collection to disk
 
-Load images to minikube, note that imagePullPolicy is `Never`:
+## Running the sample
 
-```
-minikube image load jrno/k8s-sample-db
-minikube image load jrno/k8s-sample-proxy
-minikube image load jrno/k8s-sample-server
-minikube image load jrno/k8s-sample-worker
-```
+### Building
+
+First un ```./build.sh```
+
+To build docker images locally with help of compose, and load them to minikube.
+
+Note that `imagePullPolicy` is `Never` to force image check from minikube only.
+
+### Applying
 
 Apply (create or update) resources:
 
-```k apply -f ./k8s```
+```k apply -f .k8s```
 
 Port-forward from host to cluster
 
