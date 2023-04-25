@@ -59,7 +59,6 @@ curl localhost:8080
 
 ## TODO
 
-- Figure out connectivity issue from nginx -> node server (try with direct curl first)
 - Prepare and create service for MongoDB (Stateful-set)
 - Prepare and create service for Worker and verify it writes to collection
 - Add reading to server side to read and expose the collection values
