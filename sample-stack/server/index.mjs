@@ -1,6 +1,5 @@
 import * as http from 'node:http'
 
-const HOSTNAME = '127.0.0.1'
 const PORT = 3000
 
 const server = http.createServer((req, res) => {
@@ -10,6 +9,6 @@ const server = http.createServer((req, res) => {
     res.end('Hello from Node.js service')
 })
 
-server.listen(PORT, HOSTNAME, () => {
-    console.log(`Service running at https://${HOSTNAME}:${PORT}/`)
+server.listen(PORT, () => {
+    console.log(`Service running at http://localhost:${PORT}/`)
 })

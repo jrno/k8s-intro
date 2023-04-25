@@ -1,21 +1,21 @@
 services:
   db:
-    image: jrno/k8s-sample-db:1
+    image: jrno/k8s-sample-db:3
     build: ./db
     ports:
       - "27017:27017"
     command: mongod --smallfiles --rest --httpinterface
 
   proxy:
-    image: jrno/k8s-sample-proxy:1
+    image: jrno/k8s-sample-proxy:3
     build: ./proxy
 
   worker:
-    image: jrno/k8s-sample-worker:1
+    image: jrno/k8s-sample-worker:3
     build: ./worker
 
   server:
-    image: jrno/k8s-sample-server:1
+    image: jrno/k8s-sample-server:3
     build: ./server
     ports:
       - "3000:3000"

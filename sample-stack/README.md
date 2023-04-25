@@ -49,7 +49,12 @@ Port-forward from host to cluster
 
 ```
 k port-forward deployment/proxy 8080:80
-curl localhost:8080
+```
+
+Call the service via load balancer
+
+```
+curl localhost:8080 
 ```
 
 ## TODO
