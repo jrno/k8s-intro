@@ -59,12 +59,11 @@ curl localhost:8080
 
 ## TODO
 
-- Prepare and create service for MongoDB (Stateful-set)
-- Prepare and create service for Worker and verify it writes to collection
-- Add reading to server side to read and expose the collection values
-- Set up the config maps and secrets properly to everywhere
-- Try building images within minikube to speed it up
-- Check better way to version the local images, or if that is even needed
-- Plan for next steps.
+- Create worker image and write measurements to collection
+- Modify server image to read measurements from collection
+- Modify k8s to properly use secrets and config maps
+- Check building images within minikube to speed it  up
+- Explore options to version images/deployments better
+- Plan for next steps (running in eks,gke, admin side etc)
 
 
