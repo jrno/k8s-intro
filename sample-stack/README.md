@@ -59,10 +59,11 @@ curl localhost:8080
 
 ## TODO
 
-- Create worker image and write measurements to collection
+- Adjust worker image to produce random measurements with given interval (env var)
 - Modify server image to read measurements from collection
+- Deploy server and worker in k8s
 - Modify k8s to properly use secrets and config maps
-- Check building images within minikube to speed it  up
+- Check building images within minikube to speed it up
 - Explore options to version images/deployments better
 - Plan for next steps (running in eks,gke, admin side etc)
 

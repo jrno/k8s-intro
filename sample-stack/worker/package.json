@@ -1,6 +1,7 @@
 {
-  "name": "service-http",
+  "name": "worker",
   "version": "1.0.0",
+  "description": "Producer of weather measurements data",
   "main": "index.mjs",
   "scripts": {
     "start": "node index.mjs",
@@ -8,7 +9,9 @@
   },
   "author": "Jarno Pohjonen",
   "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "mongodb": "^5.3.0"
+  },
   "volta": {
     "node": "20.0.0"
   }

@@ -18,6 +18,9 @@ services:
   worker:
     image: jrno/k8s-sample-worker:3
     build: ./worker
+    environment:
+      - MONGO_URI=mongodb://admin:password@db:27017
+      - MONGO_DB_NAME=sampleStackDB
 
   server:
     image: jrno/k8s-sample-server:3
