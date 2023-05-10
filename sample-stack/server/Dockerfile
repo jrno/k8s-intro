@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ["index.mjs", "package.json", "package-lock.json", "./"]
 
-RUN npm install --production
+RUN npm install --omit=dev
 
 EXPOSE 3000
 CMD [ "node", "index.mjs" ]
