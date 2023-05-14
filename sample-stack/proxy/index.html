@@ -1,1 +1,25 @@
-<h1>Testing</h1>
+<head>
+    <title>Sample Stack</title>
+    <script>
+        console.log("Starting sample stack application!")
+
+        const measurementsEndpoint = window.location.origin + "/measurements"
+
+        window.onload = function () {
+            setInterval(getMeasurements, 1000)
+        }
+
+        function getMeasurements() {
+            console.log("Getting measurements...")
+            fetch(measurementsEndpoint)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("measurements").innerHTML = JSON.stringify(data, undefined, 2);
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Kubernetes sample stack application v2</h1>
+    <pre id="measurements"></pre>
+</body>

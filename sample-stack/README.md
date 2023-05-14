@@ -59,8 +59,6 @@ curl localhost:8080
 
 ## TODO
 
-- Do simple function to index.html to poll data from service in pretty form
-- Deploy server and worker in k8s
 - Modify k8s to properly use secrets and config maps
 - Check building images within minikube to speed it up
 - Explore options to version images/deployments better
