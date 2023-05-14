@@ -26,6 +26,10 @@ services:
   server:
     image: jrno/k8s-sample-server:3
     build: ./server
+    environment:
+      - MONGO_URI=mongodb://admin:password@db:27017
+      - MONGO_DB_NAME=sampleStackDB
+      - MEASUREMENT_INTERVAL_SECONDS=1
     ports:
       - "3000:3000"
     volumes:

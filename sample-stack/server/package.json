@@ -11,5 +11,8 @@
   "description": "",
   "volta": {
     "node": "20.0.0"
+  },
+  "dependencies": {
+    "mongodb": "^5.3.0"
   }
 }
