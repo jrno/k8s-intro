@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 const readConfig = (env) => {
-    const { MONGO_URI, MONGO_DB_NAME, MEASUREMENT_INTERVAL_SECONDS } = process.env
+    const { MONGO_URI, MONGO_DB_NAME, MONGO_DB_COLLECTION, MEASUREMENT_INTERVAL_SECONDS } = env
 
     if (!MONGO_URI || !MONGO_DB_NAME) {
         throw new Error("Missing database configuration credentials, set 'MONGO_URI' and 'MONGO_DB_NAME")
@@ -10,7 +10,8 @@ const readConfig = (env) => {
     return {
         mongo: {
             uri: MONGO_URI,
-            db: MONGO_DB_NAME
+            db: MONGO_DB_NAME,
+            collection: MONGO_DB_COLLECTION || 'weatherMeasurements'
         },
         measurementIntervalSeconds: MEASUREMENT_INTERVAL_SECONDS || 5
     }
@@ -32,29 +33,29 @@ const getRandomMeasurement = () => {
 
 const delay = async (seconds) => new Promise(resolve => setTimeout(resolve, seconds*1000))
 
-const insertDocument = async (db, measurement) => {
+const addMeasurement = async (db, measurement) => {
     try {
         await db.collection('weatherMeasurements').insertOne(measurement);
-        console.log("Added measurement to collection", measurement)
-    } catch (err) {
-        console.error("Unable to write measurements to collection", err)
+        console.log("Wrote measurement to database", measurement)
+    } catch (error) {
+        console.error("Unable to write measurements to collection...", error)
     }
 }
 
 const config = readConfig(process.env)
-const mongoClient = await MongoClient.connect(config.mongo.uri)
-const mongoDatabase = mongoClient.db(config.mongo.db)
+const client = await MongoClient.connect(config.mongo.uri)
+const db = client.db(config.mongo.db)
 
 process.once('SIGTERM', async () => {
-    console.log("closing database connection")
-    await mongoClient.close()
+    console.log("Closing database connection...")
+    await client.close()
 })
 
-console.log(`Producing measurements using ${config.measurementIntervalSeconds} wait`, config.measurementIntervalSeconds)
+console.log(`Producer running using ${config.measurementIntervalSeconds} wait`, config.measurementIntervalSeconds)
 
 // noinspection InfiniteLoopJS
 while (true) {
-    await insertDocument(mongoDatabase, getRandomMeasurement())
+    await addMeasurement(db, getRandomMeasurement())
     await delay(config.measurementIntervalSeconds)
 }
 

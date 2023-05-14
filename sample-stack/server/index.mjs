@@ -1,10 +1,8 @@
 import * as http from 'node:http'
-import {MongoClient} from "mongodb";
-
-const PORT = 3000
+import { MongoClient } from "mongodb";
 
 const readConfig = (env) => {
-    const { MONGO_URI, MONGO_DB_NAME } = process.env
+    const { MONGO_URI, MONGO_DB_NAME, MONGO_DB_COLLECTION, MAX_MEASUREMENTS, PORT } = env
 
     if (!MONGO_URI || !MONGO_DB_NAME) {
         throw new Error("Missing database configuration credentials, set 'MONGO_URI' and 'MONGO_DB_NAME")
@@ -13,17 +11,20 @@ const readConfig = (env) => {
     return {
         mongo: {
             uri: MONGO_URI,
-            db: MONGO_DB_NAME
-        }
+            db: MONGO_DB_NAME,
+            collection: MONGO_DB_COLLECTION || 'weatherMeasurements'
+        },
+        port: PORT ? parseInt(PORT) : 3000,
+        maxMeasurements: MAX_MEASUREMENTS ? parseInt(MAX_MEASUREMENTS) : 50
     }
 }
 
-const readMeasurements = async (db) => {
+const getMeasurements = async (db, collectionName, limit) => {
     try {
-        return await db.collection('weatherMeasurements')
+        return await db.collection(collectionName)
             .find({})
-            .sort({ timestamp: -1})
-            .limit(50)
+            .sort({timestamp: -1})
+            .limit(limit)
             .toArray()
     } catch (error) {
         console.error("Unable to read measurements data", error)
@@ -32,18 +33,31 @@ const readMeasurements = async (db) => {
 }
 
 const config = readConfig(process.env)
-const mongoClient = await MongoClient.connect(config.mongo.uri)
-const mongoDatabase = mongoClient.db(config.mongo.db)
+const client = await MongoClient.connect(config.mongo.uri)
+const db = client.db(config.mongo.db)
+
+console.log("MongoDB connection initialized...")
 
 const server = http.createServer(async (req, res) => {
     console.log("Received request", req.method, req.url)
 
-    const measurements = await readMeasurements(mongoDatabase)
+    if (req.url !== '/') {
+        res.statusCode = 404
+        res.end()
+        return
+    }
+
+    const data = await getMeasurements(db, config.mongo.collection, config.maxMeasurements)
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(measurements))
+    res.end(JSON.stringify(data))
 })
 
-server.listen(PORT, () => {
-    console.log(`Service running at http://localhost:${PORT}/`)
+process.once('SIGTERM', async () => {
+    console.log("Closing database connection...")
+    await client.close()
+})
+
+server.listen(config.port, () => {
+    console.log(`Service running at http://localhost:${config.port}/`)
 })

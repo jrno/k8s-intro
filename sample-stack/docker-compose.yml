@@ -21,7 +21,8 @@ services:
     environment:
       - MONGO_URI=mongodb://admin:password@db:27017
       - MONGO_DB_NAME=sampleStackDB
-      - MEASUREMENT_INTERVAL_SECONDS=1
+      - MONGO_DB_COLLECTION=weatherMeasurements
+      - MEASUREMENT_INTERVAL_SECONDS=2
 
   server:
     image: jrno/k8s-sample-server:3
@@ -29,7 +30,9 @@ services:
     environment:
       - MONGO_URI=mongodb://admin:password@db:27017
       - MONGO_DB_NAME=sampleStackDB
-      - MEASUREMENT_INTERVAL_SECONDS=1
+      - MONGO_DB_COLLECTION=weatherMeasurements
+      - MAX_MEASUREMENTS=25
+      - PORT=3000
     ports:
       - "3000:3000"
     volumes:
