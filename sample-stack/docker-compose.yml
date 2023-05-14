@@ -23,6 +23,8 @@ services:
       - MONGO_DB_NAME=sampleStackDB
       - MONGO_DB_COLLECTION=weatherMeasurements
       - MEASUREMENT_INTERVAL_SECONDS=2
+    volumes:
+      - ./worker:/app
 
   server:
     image: jrno/k8s-sample-server:3
@@ -36,4 +38,4 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./server:/usr/src/app
+      - ./server:/app
