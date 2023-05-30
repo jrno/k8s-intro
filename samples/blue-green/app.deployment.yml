@@ -1,0 +1,28 @@
+#file: noinspection KubernetesUnknownValues
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: sample-app-$TARGET_ROLE
+    labels:
+      app: sample-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: sample-app
+      role: $TARGET_ROLE
+  template:
+    metadata:
+      labels:
+        app: sample-app
+        role: $TARGET_ROLE
+    spec:
+      containers:
+      - name: sample-app-$TARGET_ROLE
+        image: jrno/sample-app:$VERSION
+        livenessProbe:
+          httpGet:
+              path: /index.html
+              port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 2

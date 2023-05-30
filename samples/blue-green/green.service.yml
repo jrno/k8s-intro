@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: nodeport-green
+    labels:
+      app: nodeport-green
+spec:
+  type: NodePort
+  ports:
+  - port: 8082
+    targetPort: 80
+    nodePort: 30002
+    protocol: TCP
+  selector:
+    app: sample-app
+    role: green
