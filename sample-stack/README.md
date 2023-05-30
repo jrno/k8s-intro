@@ -1,6 +1,6 @@
 # Sample application for k8s
 
-Sample playground stack to illustrate some concepts of Kubernetes locally.
+A sample application to illustrate some concepts of Kubernetes.
 
 ## Why?
 
@@ -12,56 +12,43 @@ To play around with core k8s concepts, especially:
 
 And also to have a small sample cluster to be moved to EKS/GKE for further experimentation later
 
-## Structure
+## What?
 
 ### .k8s
 All kubernetes resource definitions for the sample
 
 ### proxy
-A reverse proxy acting as a load balancer and exposed out from the k8s cluster. Forwards traffic to the node.js server pods.
+Hosts a small web page for viewing the data as well as reverse-proxy to k8s cluster. Forwards traffic to server pods
 
 ### server
-A node.js server module accepting incoming http traffic and reading database contents.
+A node.js server module accepting incoming http traffic and reading measurements data from MongoDB collection on call
 
 ### worker
-A worker process creating content for the database by writing it
+A node.js worker (=producer) module pushing weather measurements to a MongoDB collection
 
 ### database
-A mongodb database that persists the state of the data/collection to disk
+A mongodb database that persists the state of the measurements data to disk
 
 ## Running the sample
 
-### Building
+- `build.sh` to build images locally
+- `run-compose.sh` to run stack with docker compose
+- `run-minikube.sh` to run stack on k8s / minikube
+- `run-eks.sh` to run stack on k8s / EKS
 
-First un ```./build.sh```
+Note that for minikube `imagePullPolicy` is `Never` to force image check from minikube only.
 
-To build docker images locally with help of compose, and load them to minikube.
+## Minikube
 
-Note that `imagePullPolicy` is `Never` to force image check from minikube only.
+- `k apply -f .k8s` to apply (create or update) stack
+- `k port-forward deployment/proxy 8080:80` to forward port 8080 from host to cluster
 
-### Applying
-
-Apply (create or update) resources:
-
-```k apply -f .k8s```
-
-Port-forward from host to cluster
-
-```
-k port-forward deployment/proxy 8080:80
-```
-
-Call the service via load balancer
-
-```
-curl localhost:8080 
-```
+Stack should respond from http://localhost:8080
 
 ## TODO
 
-- Modify k8s to properly use secrets and config maps
-- Check building images within minikube to speed it up
-- Explore options to version images/deployments better
+- Modify proper use of Kubernetes secrets and config maps
+- Get started in deploying the sample stack to EKS (run-eks.sh)
 - Plan for next steps (running in eks,gke, admin side etc)
 - (Opt) Use RBAC to limit worker/server accesses, create users for both
-
+- (Opt) Check building images within minikube to speed it up
