@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: sample-app-stable
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: sample-app
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: sample-app
+        track: stable
+    spec:
+      containers:
+      - name: sample-app
+        image: jrno/sample-app:1
+        livenessProbe:
+          httpGet:
+              path: /index.html
+              port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 2

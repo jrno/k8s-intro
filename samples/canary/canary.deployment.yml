@@ -1,0 +1,25 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: sample-app-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+      track: canary
+  template:
+    metadata:
+      labels:
+        app: sample-app
+        track: canary
+    spec:
+      containers:
+      - name: sample-app
+        image: jrno/sample-app:2
+        livenessProbe:
+          httpGet:
+              path: /index.html
+              port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 2
