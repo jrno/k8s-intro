@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: sample-nodeport
+    labels:
+      app: sample-nodeport
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 80
+    nodePort: 30000
+    protocol: TCP
+  selector:
+    app: sample-app

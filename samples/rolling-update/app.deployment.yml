@@ -1,0 +1,31 @@
+#file: noinspection KubernetesUnknownValues
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: sample-app
+    labels:
+      app: sample-app
+spec:
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+      - name: sample-app
+        image: jrno/sample-app:$VERSION
+        livenessProbe:
+          httpGet:
+              path: /index.html
+              port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 2

@@ -1,0 +1,11 @@
+services:
+  v1:
+    image: ${NAMESPACE:-jrno}/sample-app:1 # current app version
+    build: v1
+    ports:
+      - "8080:80"
+  v2:
+    image: ${NAMESPACE:-jrno}/sample-app:2 # next app version
+    build: v2
+    ports:
+      - "8090:80"
